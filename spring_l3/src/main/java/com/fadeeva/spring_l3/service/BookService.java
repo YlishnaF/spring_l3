@@ -5,6 +5,7 @@ import com.fadeeva.spring_l3.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -30,6 +31,10 @@ public class BookService {
             throw new NoSuchElementException("Не найдена книга с идентификатором \"" + id + "\"");
         }
         return book;
+    }
+
+    public List<Book> getAllBooks(){
+        return bookRepository.getBooks();
     }
 
 }

@@ -7,6 +7,7 @@ import com.fadeeva.spring_l3.repository.ReaderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -32,6 +33,10 @@ public class ReaderService {
             throw new NoSuchElementException("Не найден читатель с идентификатором \"" + id + "\"");
         }
         return reader;
+    }
+
+    public List<Reader> getAllReaders() {
+        return readerRepository.getReaders();
     }
 
 }

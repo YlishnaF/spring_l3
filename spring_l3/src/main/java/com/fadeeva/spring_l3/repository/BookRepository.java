@@ -11,6 +11,10 @@ import java.util.Objects;
 public class BookRepository {
     private final List<Book> books;
 
+    public List<Book> getBooks() {
+        return books;
+    }
+
     public BookRepository(List<Book> books) {
         this.books = books;
     }

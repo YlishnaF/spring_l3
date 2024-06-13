@@ -5,17 +5,25 @@ import com.fadeeva.spring_l3.model.Issue;
 import com.fadeeva.spring_l3.repository.BookRepository;
 import com.fadeeva.spring_l3.repository.IssueRepository;
 import com.fadeeva.spring_l3.repository.ReaderRepository;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Data
 public class IssueService {
     private final BookRepository bookRepository;
     private final ReaderRepository readerRepository;
+
+    public List<Issue> getIssueRepository() {
+        return issueRepository.getIssues();
+    }
+
     private final IssueRepository issueRepository;
 
     public Issue issue(IssueRequest request) {

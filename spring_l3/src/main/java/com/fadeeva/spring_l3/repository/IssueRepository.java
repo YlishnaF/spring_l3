@@ -3,8 +3,11 @@ package com.fadeeva.spring_l3.repository;
 import com.fadeeva.spring_l3.model.Book;
 import com.fadeeva.spring_l3.model.Issue;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -31,4 +34,9 @@ public class IssueRepository {
         }
         return false;
     }
+
+    public List<Issue> getIssues() {
+        return issues;
+    }
+
 }

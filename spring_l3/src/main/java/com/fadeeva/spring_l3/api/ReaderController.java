@@ -1,23 +1,21 @@
 package com.fadeeva.spring_l3.api;
 
-import com.fadeeva.spring_l3.model.Book;
-import com.fadeeva.spring_l3.model.Issue;
 import com.fadeeva.spring_l3.model.Reader;
-import com.fadeeva.spring_l3.repository.BookRepository;
-import com.fadeeva.spring_l3.service.BookService;
 import com.fadeeva.spring_l3.service.ReaderService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/reader")
 public class ReaderController {
     @Autowired
@@ -51,6 +49,15 @@ public class ReaderController {
     public Reader addBook(@RequestBody String name){
         log.info("Получен запрос на добавление читателя: name = {}", name);
         return service.addReader(name);
+    }
+    @GetMapping("/readers")
+    public String readers(Model model){
+        List<String> readers = new ArrayList<>();
+        for (Reader r: service.getAllReaders()) {
+            readers.add(r.getName());
+        }
+        model.addAttribute("readers", readers);
+        return "reader";
     }
 
 }

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<h1>Таблица</h1>
+<table>
+  <tr>
+    <td>Название книги</td>
+    <td>Читатель</td>
+    <td>Получил</td>
+    <td>Сдал</td>
+  </tr>
+  <tr th:each="issue: ${issues}">
+
+    <td th:text="${repBooks.getBookById(issue.getBookId()).getName()}"></td>
+    <td th:text="${repReaders.getReaderById(issue.getReaderId()).getName()}"></td>
+    <td th:text="${issue.getTimestamp()}"></td>
+    <td th:text="${issue.getReturned()}"></td>
+
+  </tr>
+
+</table>
+
+</body>
+</html>

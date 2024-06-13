@@ -1,17 +1,25 @@
 package com.fadeeva.spring_l3.api;
 
+import com.fadeeva.spring_l3.model.Book;
 import com.fadeeva.spring_l3.model.Issue;
+import com.fadeeva.spring_l3.model.Reader;
+import com.fadeeva.spring_l3.repository.BookRepository;
+import com.fadeeva.spring_l3.repository.ReaderRepository;
 import com.fadeeva.spring_l3.service.IssueService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/issue")
 public class IssuerController {
     @Autowired
@@ -53,5 +61,15 @@ public class IssuerController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(issue);
+    }
+    @GetMapping("/issues")
+    public String issues(Model model){
+        List<Issue> issues = service.getIssueRepository();
+        ReaderRepository repReaders = service.getReaderRepository();
+        BookRepository repBooks = service.getBookRepository();
+        model.addAttribute("issues", issues);
+        model.addAttribute("repReaders", repReaders);
+        model.addAttribute("repBooks", repBooks);
+        return "issues";
     }
 }
