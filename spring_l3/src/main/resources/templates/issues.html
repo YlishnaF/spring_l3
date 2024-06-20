@@ -18,8 +18,8 @@
   </tr>
   <tr th:each="issue: ${issues}">
 
-    <td th:text="${repBooks.getBookById(issue.getBookId()).getName()}"></td>
-    <td th:text="${repReaders.getReaderById(issue.getReaderId()).getName()}"></td>
+    <td th:text="${repBooks.findById(issue.getBookId()).getName()}"></td>
+    <td th:text="${repReaders.findById(issue.getReaderId()).getName()}"></td>
     <td th:text="${issue.getTimestamp()}"></td>
     <td th:text="${issue.getReturned()}"></td>
 

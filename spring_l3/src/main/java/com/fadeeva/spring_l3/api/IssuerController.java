@@ -1,9 +1,7 @@
 package com.fadeeva.spring_l3.api;
 
-import com.fadeeva.spring_l3.model.Book;
 import com.fadeeva.spring_l3.model.Issue;
-import com.fadeeva.spring_l3.model.Reader;
-import com.fadeeva.spring_l3.repository.BookRepository;
+import com.fadeeva.spring_l3.repository.BooksRepository;
 import com.fadeeva.spring_l3.repository.ReaderRepository;
 import com.fadeeva.spring_l3.service.IssueService;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +64,7 @@ public class IssuerController {
     public String issues(Model model){
         List<Issue> issues = service.getIssueRepository();
         ReaderRepository repReaders = service.getReaderRepository();
-        BookRepository repBooks = service.getBookRepository();
+        BooksRepository repBooks = service.getBookRepository();
         model.addAttribute("issues", issues);
         model.addAttribute("repReaders", repReaders);
         model.addAttribute("repBooks", repBooks);

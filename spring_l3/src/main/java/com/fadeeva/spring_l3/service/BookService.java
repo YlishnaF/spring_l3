@@ -1,40 +1,32 @@
 package com.fadeeva.spring_l3.service;
 
-import com.fadeeva.spring_l3.model.Book;
-import com.fadeeva.spring_l3.repository.BookRepository;
+import com.fadeeva.spring_l3.model.BookEntity;
+import com.fadeeva.spring_l3.repository.BooksRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
 public class BookService {
-    private final BookRepository bookRepository;
+    private final BooksRepository repository;
 
-    public Book getBookById(long id) {
-        return checkBookExists(id);
+    public BookEntity getBookById(long id) {
+        return repository.findById(id);
     }
 
-    public Book addBook(String name) {
-        return bookRepository.addBook(new Book(name));
-    }
-    public Book deleteBook(long id) {
-        return bookRepository.removeBook(checkBookExists(id));
+    public List<BookEntity> getAllBooks() {
+        return repository.findAll();
     }
 
-
-    private Book checkBookExists(long id) {
-        Book book = bookRepository.getBookById(id);
-        if (book == null) {
-            throw new NoSuchElementException("Не найдена книга с идентификатором \"" + id + "\"");
-        }
-        return book;
+    public BookEntity addBook(String name) {
+        return repository.save(new BookEntity(name));
     }
 
-    public List<Book> getAllBooks(){
-        return bookRepository.getBooks();
+    public BookEntity deleteBook(long id) {
+        BookEntity entity = getBookById(id);
+        repository.deleteById(id);
+        return entity;
     }
-
 }

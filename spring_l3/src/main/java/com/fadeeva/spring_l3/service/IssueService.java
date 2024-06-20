@@ -2,7 +2,7 @@ package com.fadeeva.spring_l3.service;
 
 import com.fadeeva.spring_l3.api.IssueRequest;
 import com.fadeeva.spring_l3.model.Issue;
-import com.fadeeva.spring_l3.repository.BookRepository;
+import com.fadeeva.spring_l3.repository.BooksRepository;
 import com.fadeeva.spring_l3.repository.IssueRepository;
 import com.fadeeva.spring_l3.repository.ReaderRepository;
 import lombok.Data;
@@ -12,28 +12,31 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Data
 public class IssueService {
-    private final BookRepository bookRepository;
+    private final BooksRepository bookRepository;
     private final ReaderRepository readerRepository;
 
     public List<Issue> getIssueRepository() {
-        return issueRepository.getIssues();
+
+        return issueRepository.findAll();
     }
 
     private final IssueRepository issueRepository;
 
     public Issue issue(IssueRequest request) {
-        if (bookRepository.getBookById(request.getBookId()) == null) {
+        if (bookRepository.findById(request.getBookId()) == null) {
             throw new NoSuchElementException("Не найдена книга с идентификатором \"" + request.getBookId() + "\"");
         }
-        if (readerRepository.getReaderById(request.getReaderId()) == null) {
+        if (readerRepository.findById(request.getReaderId()) == null) {
             throw new NoSuchElementException("Не найден читатель с идентификатором \"" + request.getReaderId() + "\"");
         }
-        if(issueRepository.isBookOnHand(request.getReaderId())){
+        if(isBookOnHand(request.getReaderId())){
             throw new IllegalArgumentException("Есть книга на руках, отказано в выдаче!");
         }
 
@@ -41,23 +44,21 @@ public class IssueService {
         issueRepository.save(issue);
         return issue;
     }
+    public boolean isBookOnHand(long id){
+        if(issueRepository.findAll().stream().anyMatch(x -> Objects.equals(x.getReaderId(), id))){
+            return issueRepository.findAll().stream().anyMatch(x->Objects.equals(x.getReturned(), null));
+        }
+        return false;
+    }
 
     public Issue closeIssue(long id) {
-        Issue closedIssue = issueRepository.getIssueById(id);
-        if (closedIssue == null) {
-            throw new NoSuchElementException("Не найдена запись о выдаче с идентификатором \"" + id + "\"");
-        }
-        issueRepository.getIssueById(id).setReturned(LocalDateTime.now());
-        return closedIssue;
-
+        Optional<Issue> closedIssue=issueRepository.findById(id);
+        closedIssue.ifPresent(issue -> issue.setReturned(LocalDateTime.now()));
+        return closedIssue.orElseGet(closedIssue::get);
     }
 
     public Issue getIssue(long id) {
-        Issue issue = issueRepository.getIssueById(id);
-        if (issue == null) {
-            throw new NoSuchElementException("Не найдена запись о выдаче с идентификатором \"" + id + "\"");
-        }
-        return issue;
-
+        Optional<Issue> issue = issueRepository.findById(id);
+        return issue.orElseGet(issue::get);
     }
 }
